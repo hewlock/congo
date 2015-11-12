@@ -37,8 +37,8 @@ class CartServiceImpl implements CartService
 
 
 	@Override
-	public void deleteItem(long itemId)
+	public CartItem deleteItem(long itemId)
 	{
-		items.remove(itemId);
+		return items.remove(itemId);
 	}
 }

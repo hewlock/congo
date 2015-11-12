@@ -10,5 +10,5 @@ public interface CartService
 
 	CartItem saveItem(CartItem item);
 
-	void deleteItem(long itemId);
+	CartItem deleteItem(long itemId);
 }

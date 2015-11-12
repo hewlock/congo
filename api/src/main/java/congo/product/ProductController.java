@@ -23,6 +23,16 @@ public class ProductController
 	ProductAssembler productAssembler;
 
 
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@ResponseBody
+	public HttpEntity<ProductListResource> getProductList()
+	{
+		Collection<Product> products = productService.getAllProducts();
+		ProductListResource productListResource = productAssembler.assemble(products);
+		return new ResponseEntity<ProductListResource>(productListResource, HttpStatus.OK);
+	}
+
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	public HttpEntity<ProductResource> getProduct(@PathVariable("id") long id)
@@ -40,15 +50,5 @@ public class ProductController
 			response = new ResponseEntity<ProductResource>(HttpStatus.NOT_FOUND);
 		}
 		return response;
-	}
-
-
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	@ResponseBody
-	public HttpEntity<ProductListResource> getProductList()
-	{
-		Collection<Product> products = productService.getAllProducts();
-		ProductListResource productListResource = productAssembler.assemble(products);
-		return new ResponseEntity<ProductListResource>(productListResource, HttpStatus.OK);
 	}
 }
