@@ -1,6 +1,7 @@
 package shop.product;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 class ProductServiceImpl implements ProductService
 {
 	private final Map<Long, Product> products = new HashMap<>();
+
 
 	public ProductServiceImpl()
 	{
@@ -25,6 +27,13 @@ class ProductServiceImpl implements ProductService
 	public Product findProduct(long productId)
 	{
 		return products.get(productId);
+	}
+
+
+	@Override
+	public Collection<Product> findAllProducts()
+	{
+		return products.values();
 	}
 
 
