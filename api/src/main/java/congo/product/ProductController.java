@@ -1,4 +1,4 @@
-package shop.product;
+package congo.product;
 
 import java.util.Collection;
 
@@ -34,11 +34,11 @@ public class ProductController
 		if (null != product)
 		{
 			ProductResource productResource = createProductResource(product);
-			response = new ResponseEntity<>(productResource, HttpStatus.OK);
+			response = new ResponseEntity<ProductResource>(productResource, HttpStatus.OK);
 		}
 		else
 		{
-			response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			response = new ResponseEntity<ProductResource>(HttpStatus.NOT_FOUND);
 		}
 		return response;
 	}
@@ -50,7 +50,7 @@ public class ProductController
 	{
 		Collection<Product> products = productService.findAllProducts();
 		ProductListResource productListResource = createProductListResource(products);
-		return new ResponseEntity<>(productListResource, HttpStatus.OK);
+		return new ResponseEntity<ProductListResource>(productListResource, HttpStatus.OK);
 	}
 
 

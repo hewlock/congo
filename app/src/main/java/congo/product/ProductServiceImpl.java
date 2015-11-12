@@ -1,4 +1,4 @@
-package shop.product;
+package congo.product;
 
 import java.math.BigDecimal;
 import java.util.Collection;

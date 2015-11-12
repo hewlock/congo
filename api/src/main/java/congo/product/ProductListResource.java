@@ -1,4 +1,4 @@
-package shop.product;
+package congo.product;
 
 import java.util.ArrayList;
 import java.util.Collection;
