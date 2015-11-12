@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.UriTemplate;
 import org.springframework.stereotype.Service;
 
 import congo.product.ProductAssembler;
@@ -40,6 +42,10 @@ class CartAssemblerImpl implements CartAssembler
 			listResource.embed(assemble(item));
 			listResource.embed(productAssembler.assemble(item.getProduct()));
 		}
+
+		listResource.add(linkTo(methodOn(CartController.class).getCartItemList()).withSelfRel());
+		listResource.add(new Link(new UriTemplate(String.format("%s/{%s}", linkTo(CartController.class), "id")), "cart-item"));
+
 		return listResource;
 	}
 

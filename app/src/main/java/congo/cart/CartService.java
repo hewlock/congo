@@ -4,9 +4,11 @@ import java.util.Collection;
 
 public interface CartService
 {
-	CartItem getCartItem(long id);
+	CartItem getCartItem(long itemId);
 
 	Collection<CartItem> getAllCartItems();
+
+	Collection<CartItem> removeAllCartItems();
 
 	CartItem saveItem(CartItem item);
 

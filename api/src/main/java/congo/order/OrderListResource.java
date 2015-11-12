@@ -1,6 +1,5 @@
-package congo.cart;
+package congo.order;
 
-import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -14,41 +13,28 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import congo.product.ProductResource;
 
-@Relation("cart")
-public class CartItemListResource extends ResourceSupport
+@Relation("orders")
+public class OrderListResource extends ResourceSupport
 {
-	private final Collection<ResourceSupport> cartItems = new HashSet<ResourceSupport>();
+	private final Collection<ResourceSupport> orders = new HashSet<ResourceSupport>();
 	private final Collection<ResourceSupport> products = new HashSet<ResourceSupport>();
-	private final BigDecimal total;
-
-
-	public CartItemListResource(BigDecimal total)
-	{
-		this.total = total;
-	}
 
 
 	public int getCount()
 	{
-		return cartItems.size();
+		return orders.size();
 	}
 
 
-	public BigDecimal getTotal()
+	public void embed(OrderResource resource)
 	{
-		return total;
+		orders.add(resource);
 	}
 
 
-	public void embed(CartItemResource item)
+	public void embed(ProductResource resource)
 	{
-		cartItems.add(item);
-	}
-
-
-	public void embed(ProductResource item)
-	{
-		products.add(item);
+		products.add(resource);
 	}
 
 
@@ -57,7 +43,7 @@ public class CartItemListResource extends ResourceSupport
 	public Map<String, Collection<ResourceSupport>> getEmbedded()
 	{
 		Map<String, Collection<ResourceSupport>> embedded = new HashMap<String, Collection<ResourceSupport>>(2);
-		embedded.put("cart-item", cartItems);
+		embedded.put("order", orders);
 		embedded.put("products", products);
 		return embedded;
 	}

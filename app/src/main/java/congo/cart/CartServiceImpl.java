@@ -1,5 +1,6 @@
 package congo.cart;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,9 +15,9 @@ class CartServiceImpl implements CartService
 
 
 	@Override
-	public CartItem getCartItem(long id)
+	public CartItem getCartItem(long itemId)
 	{
-		return items.get(id);
+		return items.get(itemId);
 	}
 
 
@@ -24,6 +25,15 @@ class CartServiceImpl implements CartService
 	public Collection<CartItem> getAllCartItems()
 	{
 		return items.values();
+	}
+
+
+	@Override
+	public Collection<CartItem> removeAllCartItems()
+	{
+		Collection<CartItem> previousItems = new ArrayList<CartItem>(items.values());
+		items.clear();
+		return previousItems;
 	}
 
 

@@ -5,9 +5,6 @@ import java.math.BigDecimal;
 import org.springframework.hateoas.ResourceSupport;
 import org.springframework.hateoas.core.Relation;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 @Relation("product")
 public class ProductResource extends ResourceSupport
 {
@@ -16,11 +13,7 @@ public class ProductResource extends ResourceSupport
 	private final BigDecimal price;
 
 
-	@JsonCreator
-	public ProductResource(
-		@JsonProperty("name") String name,
-		@JsonProperty("price") BigDecimal price,
-		@JsonProperty("description") String description)
+	public ProductResource(String name, BigDecimal price, String description)
 	{
 		this.name = name;
 		this.price = price;

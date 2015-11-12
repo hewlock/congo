@@ -26,16 +26,16 @@ class ProductAssemblerImpl implements ProductAssembler
 	@Override
 	public ProductListResource assemble(Collection<Product> products)
 	{
-		ProductListResource productListResource = new ProductListResource();
-		for(Product product : products)
+		ProductListResource listResource = new ProductListResource();
+		for (Product product : products)
 		{
 			ProductResource productResource = assemble(product);
-			productListResource.embed(productResource);
+			listResource.embed(productResource);
 		}
 
-		productListResource.add(linkTo(methodOn(ProductController.class).getProductList()).withSelfRel());
-		productListResource.add(new Link(new UriTemplate(String.format("%s/{%s}", linkTo(ProductController.class), "productId")), "product"));
+		listResource.add(linkTo(methodOn(ProductController.class).getProductList()).withSelfRel());
+		listResource.add(new Link(new UriTemplate(String.format("%s/{%s}", linkTo(ProductController.class), "id")), "product"));
 
-		return productListResource;
+		return listResource;
 	}
 }
