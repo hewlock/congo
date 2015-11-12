@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 class ProductServiceImpl implements ProductService
 {
-	private final Map<Long, Product> products = new HashMap<>();
+	private final Map<Long, Product> products = new HashMap<Long, Product>();
 
 
 	public ProductServiceImpl()

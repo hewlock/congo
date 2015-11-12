@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Relation("products")
 public class ProductListResource extends ResourceSupport
 {
-	private final List<ProductResource> products = new ArrayList<>();
+	private final List<ProductResource> products = new ArrayList<ProductResource>();
 
 
 	public int getCount()
@@ -35,7 +35,7 @@ public class ProductListResource extends ResourceSupport
 	@JsonProperty("_embedded")
 	public Map<String, Collection<ProductResource>> getEmbedded()
 	{
-		Map<String, Collection<ProductResource>> embedded = new HashMap<>(1);
+		Map<String, Collection<ProductResource>> embedded = new HashMap<String, Collection<ProductResource>>(1);
 		embedded.put("product", products);
 		return embedded;
 	}
