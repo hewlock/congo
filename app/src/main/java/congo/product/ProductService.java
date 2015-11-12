@@ -4,9 +4,9 @@ import java.util.Collection;
 
 public interface ProductService
 {
-	Product findProduct(long productId);
+	Product getProduct(long productId);
 
-	Collection<Product> findAllProducts();
+	Collection<Product> getAllProducts();
 
 	void saveProduct(Product product);
 }

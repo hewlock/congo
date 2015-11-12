@@ -24,14 +24,14 @@ class ProductServiceImpl implements ProductService
 
 
 	@Override
-	public Product findProduct(long productId)
+	public Product getProduct(long productId)
 	{
 		return products.get(productId);
 	}
 
 
 	@Override
-	public Collection<Product> findAllProducts()
+	public Collection<Product> getAllProducts()
 	{
 		return products.values();
 	}

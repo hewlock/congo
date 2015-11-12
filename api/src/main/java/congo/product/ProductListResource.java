@@ -1,9 +1,8 @@
 package congo.product;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
 
 import org.springframework.hateoas.ResourceSupport;
@@ -16,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Relation("products")
 public class ProductListResource extends ResourceSupport
 {
-	private final List<ProductResource> products = new ArrayList<ProductResource>();
+	private final Collection<ProductResource> products = new HashSet<ProductResource>();
 
 
 	public int getCount()
