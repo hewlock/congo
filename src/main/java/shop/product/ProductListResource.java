@@ -7,7 +7,7 @@ import org.springframework.hateoas.core.Relation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-@Relation(value = "products")
+@Relation("products")
 public class ProductListResource extends ResourceSupport
 {
 	private final Collection<ProductResource> products;

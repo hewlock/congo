@@ -8,8 +8,8 @@ import org.springframework.hateoas.core.Relation;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-@Relation
-class ProductResource extends ResourceSupport
+@Relation("product")
+public class ProductResource extends ResourceSupport
 {
 	private final String name;
 	private final String description;
