@@ -1,12 +1,10 @@
 package shop.product;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.ResourceSupport;
-import org.springframework.hateoas.core.Relation;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.UriTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -58,27 +56,27 @@ public class ProductController
 
 	private ProductListResource createProductListResource(Collection<Product> products)
 	{
-		List<ProductResource> resources = new ArrayList<>();
+		ProductListResource productListResource = new ProductListResource();
 		for(Product product : products)
 		{
-			resources.add(createProductResource(product));
+			ProductResource productResource = createProductResource(product);
+			productListResource.embed(productResource);
 		}
-		return new ProductListResource(resources);
+
+		productListResource.add(linkTo(methodOn(ProductController.class).getProductList()).withSelfRel());
+		productListResource.add(new Link(new UriTemplate(String.format("%s/{%s}", linkTo(ProductController.class), "productId")), "product"));
+
+		return productListResource;
 	}
 
 
 	private ProductResource createProductResource(Product product)
 	{
 		ProductResource productResource = new ProductResource(product.getName(), product.getPrice(), product.getDescription());
+
 		productResource.add(linkTo(methodOn(ProductController.class).getProduct(product.getId())).withSelfRel());
-		productResource.add(linkTo(methodOn(ProductController.class).getProductList()).withRel(getRel(ProductListResource.class)));
+		productResource.add(linkTo(methodOn(ProductController.class).getProductList()).withRel("products"));
 
 		return productResource;
-	}
-
-
-	private static String getRel(Class<? extends ResourceSupport> clazz)
-	{
-		return clazz.getAnnotation(Relation.class).value();
 	}
 }
