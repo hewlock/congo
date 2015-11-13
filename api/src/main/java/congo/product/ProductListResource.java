@@ -35,7 +35,10 @@ public class ProductListResource extends ResourceSupport
 	public Map<String, Collection<ProductResource>> getEmbedded()
 	{
 		Map<String, Collection<ProductResource>> embedded = new HashMap<String, Collection<ProductResource>>(1);
-		embedded.put("product", products);
+		if(!products.isEmpty())
+		{
+			embedded.put("product", products);
+		}
 		return embedded;
 	}
 }

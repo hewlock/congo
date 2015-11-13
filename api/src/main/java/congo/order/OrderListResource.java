@@ -43,8 +43,14 @@ public class OrderListResource extends ResourceSupport
 	public Map<String, Collection<ResourceSupport>> getEmbedded()
 	{
 		Map<String, Collection<ResourceSupport>> embedded = new HashMap<String, Collection<ResourceSupport>>(2);
-		embedded.put("order", orders);
-		embedded.put("products", products);
+		if(!orders.isEmpty())
+		{
+			embedded.put("order", orders);
+		}
+		if(!products.isEmpty())
+		{
+			embedded.put("products", products);
+		}
 		return embedded;
 	}
 }

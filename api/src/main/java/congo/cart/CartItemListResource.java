@@ -57,8 +57,14 @@ public class CartItemListResource extends ResourceSupport
 	public Map<String, Collection<ResourceSupport>> getEmbedded()
 	{
 		Map<String, Collection<ResourceSupport>> embedded = new HashMap<String, Collection<ResourceSupport>>(2);
-		embedded.put("cart-item", cartItems);
-		embedded.put("products", products);
+		if(!cartItems.isEmpty())
+		{
+			embedded.put("cart-item", cartItems);
+		}
+		if(!products.isEmpty())
+		{
+			embedded.put("products", products);
+		}
 		return embedded;
 	}
 }
