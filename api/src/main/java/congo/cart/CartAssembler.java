@@ -7,4 +7,6 @@ public interface CartAssembler
 	CartItemResource assemble(CartItem item);
 
 	CartItemListResource assemble(Collection<CartItem> items);
+
+	CartItem assemble(CartItemForm form);
 }

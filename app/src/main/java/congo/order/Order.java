@@ -28,9 +28,9 @@ public class Order
 	}
 
 
-	public boolean isEmpty()
+	public boolean isValid()
 	{
-		return products.isEmpty();
+		return !products.isEmpty();
 	}
 
 

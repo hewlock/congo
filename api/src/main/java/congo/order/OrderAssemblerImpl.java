@@ -1,6 +1,7 @@
 package congo.order;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,8 @@ import org.springframework.hateoas.Link;
 import org.springframework.hateoas.UriTemplate;
 import org.springframework.stereotype.Service;
 
+import congo.cart.CartItem;
+import congo.cart.CartService;
 import congo.product.Product;
 import congo.product.ProductAssembler;
 
@@ -18,6 +21,9 @@ class OrderAssemblerImpl implements OrderAssembler
 {
 	@Autowired
 	ProductAssembler productAssembler;
+
+	@Autowired
+	CartService cartService;
 
 
 	@Override
@@ -74,5 +80,19 @@ class OrderAssemblerImpl implements OrderAssembler
 		listResource.add(new Link(new UriTemplate(String.format("%s/{%s}", linkTo(OrderController.class), "id")), "order"));
 
 		return listResource;
+	}
+
+
+	@Override
+	public Order assemble(OrderForm form)
+	{
+		String creditCardNumber = form.getCreditCardNumber();
+		Collection<CartItem> cartItems = cartService.removeAllCartItems();
+		Collection<Product> products = new ArrayList<Product>(cartItems.size());
+		for (CartItem cartItem : cartItems)
+		{
+			products.add(cartItem.getProduct());
+		}
+		return new Order(products, creditCardNumber);
 	}
 }

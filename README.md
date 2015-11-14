@@ -1,4 +1,4 @@
-# hateoas
+# Congo
 HATEOAS REST example project for Greater Milwaukee Java Meetup
 
 Build:
@@ -6,10 +6,13 @@ Build:
 
 Run (either way should work):
 * gradlew run
-* java -jar build/libs/rest-hateoas-0.1.0.jar
+* java -jar api/build/libs/rest-hateoas-0.1.0.jar
+
+Debug:
+* java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -jar api/build/libs/rest-hateoas-0.1.0.jar
 
 Test:
-* http://localhost:8080/greeting
+* http://localhost:8080/product/
 
 ## Reference
 

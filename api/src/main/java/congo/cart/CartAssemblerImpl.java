@@ -8,8 +8,10 @@ import org.springframework.hateoas.Link;
 import org.springframework.hateoas.UriTemplate;
 import org.springframework.stereotype.Service;
 
+import congo.product.Product;
 import congo.product.ProductAssembler;
 import congo.product.ProductController;
+import congo.product.ProductService;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
 
@@ -18,6 +20,9 @@ class CartAssemblerImpl implements CartAssembler
 {
 	@Autowired
 	ProductAssembler productAssembler;
+
+	@Autowired
+	ProductService productService;
 
 
 	@Override
@@ -58,5 +63,15 @@ class CartAssemblerImpl implements CartAssembler
 			total = total.add(item.getProduct().getPrice());
 		}
 		return total;
+	}
+
+
+	@Override
+	public CartItem assemble(CartItemForm form)
+	{
+		String prefix = linkTo(methodOn(ProductController.class).getProductList()).toString();
+		long productId = Long.parseLong(form.getProduct().replace(prefix, ""));
+		Product product = productService.getProduct(productId);
+		return new CartItem(product);
 	}
 }

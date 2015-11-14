@@ -1,7 +1,6 @@
 package congo.order;
 
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,16 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import congo.cart.CartItem;
-import congo.cart.CartService;
-import congo.product.Product;
-
 @Controller
 @RequestMapping("/order")
 public class OrderController
 {
-	@Autowired
-	CartService cartService;
 
 	@Autowired
 	OrderService orderService;
@@ -38,8 +31,8 @@ public class OrderController
 	public HttpEntity<OrderListResource> getOrderList()
 	{
 		Collection<Order> orders = orderService.getAllOrders();
-		OrderListResource listResource = orderAssembler.assemble(orders);
-		return new ResponseEntity<OrderListResource>(listResource, HttpStatus.OK);
+		OrderListResource resource = orderAssembler.assemble(orders);
+		return new ResponseEntity<OrderListResource>(resource, HttpStatus.OK);
 	}
 
 
@@ -48,50 +41,26 @@ public class OrderController
 	public HttpEntity<OrderResource> getOrder(@PathVariable("id") long id)
 	{
 		Order order = orderService.getOrder(id);
-
-		ResponseEntity<OrderResource> response = null;
-		if (null != order)
+		if (null == order)
 		{
-			OrderResource resource = orderAssembler.assemble(order);
-			response = new ResponseEntity<OrderResource>(resource, HttpStatus.OK);
+			return new ResponseEntity<OrderResource>(HttpStatus.NOT_FOUND);
 		}
-		else
-		{
-			response = new ResponseEntity<OrderResource>(HttpStatus.NOT_FOUND);
-		}
-		return response;
+		OrderResource resource = orderAssembler.assemble(order);
+		return new ResponseEntity<OrderResource>(resource, HttpStatus.OK);
 	}
 
 
 	@RequestMapping(value = "/", method = RequestMethod.POST)
 	@ResponseBody
-	public HttpEntity<OrderResource> createOrder(@RequestBody OrderForm form)
+	public HttpEntity<OrderResource> postOrder(@RequestBody OrderForm form)
 	{
-		Order order = getOrder(form.getCreditCardNumber());
-
-		ResponseEntity<OrderResource> response = null;
-		if (order.isEmpty())
+		Order order = orderAssembler.assemble(form);
+		if (!order.isValid())
 		{
-			response = new ResponseEntity<OrderResource>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<OrderResource>(HttpStatus.BAD_REQUEST);
 		}
-		else
-		{
-			OrderResource resource = orderAssembler.assemble(orderService.saveOrder(order));
-			response = new ResponseEntity<OrderResource>(resource, HttpStatus.OK);
-		}
-		return response;
+		Order persisted = orderService.saveOrder(order);
+		OrderResource resource = orderAssembler.assemble(persisted);
+		return new ResponseEntity<OrderResource>(resource, HttpStatus.OK);
 	}
-
-
-	private Order getOrder(String creditCardNumber)
-	{
-		Collection<CartItem> cartItems = cartService.removeAllCartItems();
-		Collection<Product> products = new ArrayList<Product>(cartItems.size());
-		for (CartItem cartItem : cartItems)
-		{
-			products.add(cartItem.getProduct());
-		}
-		return new Order(products, creditCardNumber);
-	}
-
 }

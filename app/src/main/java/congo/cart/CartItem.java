@@ -21,6 +21,12 @@ public class CartItem
 	}
 
 
+	public boolean isValid()
+	{
+		return null != product;
+	}
+
+
 	public long getId()
 	{
 		return id;

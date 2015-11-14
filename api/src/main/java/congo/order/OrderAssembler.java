@@ -7,4 +7,6 @@ public interface OrderAssembler
 	OrderResource assemble(Order order);
 
 	OrderListResource assemble(Collection<Order> orders);
+
+	Order assemble(OrderForm form);
 }

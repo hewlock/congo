@@ -28,8 +28,8 @@ public class ProductController
 	public HttpEntity<ProductListResource> getProductList()
 	{
 		Collection<Product> products = productService.getAllProducts();
-		ProductListResource productListResource = productAssembler.assemble(products);
-		return new ResponseEntity<ProductListResource>(productListResource, HttpStatus.OK);
+		ProductListResource resource = productAssembler.assemble(products);
+		return new ResponseEntity<ProductListResource>(resource, HttpStatus.OK);
 	}
 
 
@@ -38,17 +38,11 @@ public class ProductController
 	public HttpEntity<ProductResource> getProduct(@PathVariable("id") long id)
 	{
 		Product product = productService.getProduct(id);
-
-		ResponseEntity<ProductResource> response = null;
-		if (null != product)
+		if(null == product)
 		{
-			ProductResource productResource = productAssembler.assemble(product);
-			response = new ResponseEntity<ProductResource>(productResource, HttpStatus.OK);
+			return new ResponseEntity<ProductResource>(HttpStatus.NOT_FOUND);
 		}
-		else
-		{
-			response = new ResponseEntity<ProductResource>(HttpStatus.NOT_FOUND);
-		}
-		return response;
+		ProductResource resource = productAssembler.assemble(product);
+		return new ResponseEntity<ProductResource>(resource, HttpStatus.OK);
 	}
 }
