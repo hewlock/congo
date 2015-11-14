@@ -10,7 +10,6 @@ import org.springframework.hateoas.UriTemplate;
 import org.springframework.stereotype.Service;
 
 import congo.EmbeddedResourceSupport;
-import congo.cart.CartItem;
 import congo.cart.CartService;
 import congo.product.Product;
 import congo.product.ProductAssembler;
@@ -33,6 +32,7 @@ class OrderAssemblerImpl implements OrderAssembler
 		OrderResource resource = new OrderResource(
 			getTotal(order.getProducts()),
 			order.getCreditCardNumber(),
+			order.getAddress(),
 			order.getTime());
 		resource.add(getOrderLinks(order));
 		resource.embed(getOrderEmbeds(order));
@@ -104,13 +104,8 @@ class OrderAssemblerImpl implements OrderAssembler
 	@Override
 	public Order assemble(OrderForm form)
 	{
-		String creditCardNumber = form.getCreditCardNumber();
-		Collection<CartItem> cartItems = cartService.removeAllCartItems();
-		Collection<Product> products = new ArrayList<Product>(cartItems.size());
-		for (CartItem cartItem : cartItems)
-		{
-			products.add(cartItem.getProduct());
-		}
-		return new Order(products, creditCardNumber);
+		return new Order(
+				form.getCreditCardNumber(),
+				form.getAddress());
 	}
 }

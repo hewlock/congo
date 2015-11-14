@@ -29,15 +29,6 @@ class CartServiceImpl implements CartService
 
 
 	@Override
-	public Collection<CartItem> removeAllCartItems()
-	{
-		Collection<CartItem> previousItems = new ArrayList<CartItem>(items.values());
-		items.clear();
-		return previousItems;
-	}
-
-
-	@Override
 	public CartItem saveItem(CartItem item)
 	{
 		CartItem persisted = new CartItem(nextId++, item.getProduct());
@@ -50,5 +41,12 @@ class CartServiceImpl implements CartService
 	public CartItem deleteItem(long itemId)
 	{
 		return items.remove(itemId);
+	}
+
+
+	@Override
+	public void clear()
+	{
+		items.clear();
 	}
 }

@@ -14,13 +14,19 @@ public class OrderResource extends EmbeddedResourceSupport
 {
 	private final BigDecimal total;
 	private final String creditCardNumber;
+	private final String address;
 	private final Date time;
 
 
-	public OrderResource(BigDecimal total, String creditCardNumber, Date time)
+	public OrderResource(
+			BigDecimal total,
+			String creditCardNumber,
+			String address,
+			Date time)
 	{
 		this.total = total;
 		this.creditCardNumber = creditCardNumber;
+		this.address = address;
 		this.time = time;
 	}
 
@@ -34,6 +40,12 @@ public class OrderResource extends EmbeddedResourceSupport
 	public String getCreditCardNumber()
 	{
 		return creditCardNumber;
+	}
+
+
+	public String getAddress()
+	{
+		return address;
 	}
 
 

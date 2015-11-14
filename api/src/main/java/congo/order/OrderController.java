@@ -14,13 +14,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import congo.cart.CartService;
+
 @Controller
 @RequestMapping("/order")
 public class OrderController
 {
-
 	@Autowired
 	OrderService orderService;
+
+	@Autowired
+	CartService cartService;
 
 	@Autowired
 	OrderAssembler orderAssembler;
@@ -55,10 +59,12 @@ public class OrderController
 	public HttpEntity<OrderResource> postOrder(@RequestBody OrderForm form)
 	{
 		Order order = orderAssembler.assemble(form);
+		order.addAll(cartService.getAllCartItems());
 		if (!order.isValid())
 		{
 			return new ResponseEntity<OrderResource>(HttpStatus.BAD_REQUEST);
 		}
+		cartService.clear();
 		Order persisted = orderService.saveOrder(order);
 		OrderResource resource = orderAssembler.assemble(persisted);
 		return new ResponseEntity<OrderResource>(resource, HttpStatus.OK);

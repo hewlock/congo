@@ -30,7 +30,12 @@ class OrderServiceImpl implements OrderService
 	@Override
 	public Order saveOrder(Order order)
 	{
-		Order persisted = new Order(nextId++, order.getProducts(), order.getCreditCardNumber(), order.getTime());
+		Order persisted = new Order(
+				nextId++,
+				order.getProducts(),
+				order.getCreditCardNumber(),
+				order.getAddress(),
+				order.getTime());
 		orders.put(persisted.getId(), persisted);
 		return persisted;
 	}
