@@ -2,11 +2,12 @@ package congo.product;
 
 import java.math.BigDecimal;
 
-import org.springframework.hateoas.ResourceSupport;
 import org.springframework.hateoas.core.Relation;
 
+import congo.EmbeddedResourceSupport;
+
 @Relation("product")
-public class ProductResource extends ResourceSupport
+public class ProductResource extends EmbeddedResourceSupport
 {
 	private final String name;
 	private final String description;

@@ -1,10 +1,13 @@
 package congo.product;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.UriTemplate;
 import org.springframework.stereotype.Service;
+
+import congo.EmbeddedResourceSupport;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
 
@@ -14,28 +17,47 @@ class ProductAssemblerImpl implements ProductAssembler
 	@Override
 	public ProductResource assemble(Product product)
 	{
-		ProductResource productResource = new ProductResource(product.getName(), product.getPrice(), product.getDescription());
+		ProductResource resource = new ProductResource(product.getName(), product.getPrice(), product.getDescription());
+		resource.add(getProductLinks(product));
+		return resource;
+	}
 
-		productResource.add(linkTo(methodOn(ProductController.class).getProduct(product.getId())).withSelfRel());
-		productResource.add(linkTo(methodOn(ProductController.class).getProductList()).withRel("products"));
 
-		return productResource;
+	private Collection<Link> getProductLinks(Product product)
+	{
+		Collection<Link> links = new ArrayList<Link>();
+		links.add(linkTo(methodOn(ProductController.class).getProduct(product.getId())).withSelfRel());
+		links.add(linkTo(methodOn(ProductController.class).getProductList()).withRel("products"));
+		return links;
 	}
 
 
 	@Override
 	public ProductListResource assemble(Collection<Product> products)
 	{
-		ProductListResource listResource = new ProductListResource();
+		ProductListResource resource = new ProductListResource();
+		resource.add(getProductListLinks());
+		resource.embed(getProductListEmbeds(products));
+		return resource;
+	}
+
+
+	private Collection<Link> getProductListLinks()
+	{
+		Collection<Link> links = new ArrayList<Link>();
+		links.add(linkTo(methodOn(ProductController.class).getProductList()).withSelfRel());
+		links.add(new Link(new UriTemplate(String.format("%s/{%s}", linkTo(ProductController.class), "id")), "product"));
+		return links;
+	}
+
+
+	private Collection<EmbeddedResourceSupport> getProductListEmbeds(Collection<Product> products)
+	{
+		Collection<EmbeddedResourceSupport> resources = new ArrayList<EmbeddedResourceSupport>();
 		for (Product product : products)
 		{
-			ProductResource productResource = assemble(product);
-			listResource.embed(productResource);
+			resources.add(assemble(product));
 		}
-
-		listResource.add(linkTo(methodOn(ProductController.class).getProductList()).withSelfRel());
-		listResource.add(new Link(new UriTemplate(String.format("%s/{%s}", linkTo(ProductController.class), "id")), "product"));
-
-		return listResource;
+		return resources;
 	}
 }

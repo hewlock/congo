@@ -9,6 +9,7 @@ import org.springframework.hateoas.Link;
 import org.springframework.hateoas.UriTemplate;
 import org.springframework.stereotype.Service;
 
+import congo.EmbeddedResourceSupport;
 import congo.cart.CartItem;
 import congo.cart.CartService;
 import congo.product.Product;
@@ -29,25 +30,12 @@ class OrderAssemblerImpl implements OrderAssembler
 	@Override
 	public OrderResource assemble(Order order)
 	{
-		OrderResource resource = getOrderResource(order);
-		for (Product product : order.getProducts())
-		{
-			resource.embed(productAssembler.assemble(product));
-		}
-		return resource;
-	}
-
-
-	private OrderResource getOrderResource(Order order)
-	{
 		OrderResource resource = new OrderResource(
 			getTotal(order.getProducts()),
 			order.getCreditCardNumber(),
 			order.getTime());
-
-		resource.add(linkTo(methodOn(OrderController.class).getOrder(order.getId())).withSelfRel());
-		resource.add(linkTo(methodOn(OrderController.class).getOrderList()).withRel("orders"));
-
+		resource.add(getOrderLinks(order));
+		resource.embed(getOrderEmbeds(order));
 		return resource;
 	}
 
@@ -63,23 +51,53 @@ class OrderAssemblerImpl implements OrderAssembler
 	}
 
 
+	private Collection<Link> getOrderLinks(Order order)
+	{
+		Collection<Link> links = new ArrayList<Link>();
+		links.add(linkTo(methodOn(OrderController.class).getOrder(order.getId())).withSelfRel());
+		links.add(linkTo(methodOn(OrderController.class).getOrderList()).withRel("orders"));
+		return links;
+	}
+
+
+	public Collection<EmbeddedResourceSupport> getOrderEmbeds(Order order)
+	{
+		Collection<EmbeddedResourceSupport> resources = new ArrayList<EmbeddedResourceSupport>();
+		for (Product product : order.getProducts())
+		{
+			resources.add(productAssembler.assemble(product));
+		}
+		return resources;
+	}
+
+
 	@Override
 	public OrderListResource assemble(Collection<Order> orders)
 	{
-		OrderListResource listResource = new OrderListResource();
+		OrderListResource resource = new OrderListResource();
+		resource.add(getOrderListLinks());
+		resource.embed(getOrderListEmbeds(orders));
+		return resource;
+	}
+
+
+	public Collection<Link> getOrderListLinks()
+	{
+		Collection<Link> links = new ArrayList<Link>();
+		links.add(linkTo(methodOn(OrderController.class).getOrderList()).withSelfRel());
+		links.add(new Link(new UriTemplate(String.format("%s/{%s}", linkTo(OrderController.class), "id")), "order"));
+		return links;
+	}
+
+
+	public Collection<EmbeddedResourceSupport> getOrderListEmbeds(Collection<Order> orders)
+	{
+		Collection<EmbeddedResourceSupport> resources = new ArrayList<EmbeddedResourceSupport>();
 		for (Order order : orders)
 		{
-			listResource.embed(getOrderResource(order));
-			for (Product product : order.getProducts())
-			{
-				listResource.embed(productAssembler.assemble(product));
-			}
+			resources.add(assemble(order));
 		}
-
-		listResource.add(linkTo(methodOn(OrderController.class).getOrderList()).withSelfRel());
-		listResource.add(new Link(new UriTemplate(String.format("%s/{%s}", linkTo(OrderController.class), "id")), "order"));
-
-		return listResource;
+		return resources;
 	}
 
 
