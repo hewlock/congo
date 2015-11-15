@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.hateoas.Link;
-import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.stereotype.Service;
 
 import congo.Assembler;
@@ -29,7 +28,7 @@ public class ProductGetAssembler implements Assembler<Product, ProductGetResourc
 	private Collection<Link> getProductLinks(Product product)
 	{
 		Collection<Link> links = new ArrayList<Link>();
-		links.add(ControllerLinkBuilder.linkTo(methodOn(ProductController.class).getProduct(product.getId())).withSelfRel());
+		links.add(linkTo(methodOn(ProductController.class).getProduct(product.getId())).withSelfRel());
 		links.add(linkTo(methodOn(ProductController.class).getProductList()).withRel("products"));
 		return links;
 	}

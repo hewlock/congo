@@ -39,7 +39,7 @@ public class ItemGetAssembler implements Assembler<CartItem, ItemGetResource>
 	private Collection<Link> getCartItemLinks(CartItem item)
 	{
 		Collection<Link> links = new ArrayList<Link>();
-		links.add(ControllerLinkBuilder.linkTo(methodOn(CartController.class).getCartItem(item.getId())).withSelfRel());
+		links.add(linkTo(methodOn(CartController.class).getCartItem(item.getId())).withSelfRel());
 		links.add(linkTo(methodOn(CartController.class).getCartItemList()).withRel("cart-items"));
 		links.add(linkTo(methodOn(ProductController.class).getProduct(item.getProduct().getId())).withRel("product"));
 		return links;
