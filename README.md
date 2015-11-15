@@ -9,6 +9,12 @@ Why would you want to use HATEOAS REST?
 * Consistent way to embedded resources
 * Consistent way to convey errors
 
+HATEAOS (Hypermedia as the Engine of Application State)
+Defines the way in which application clients interact with the server, by navigating hypermedia links they find inside resource models returned by the server.
+
+HAL (Hypertext Application Language)
+An implementation of HATEOAS.  Defines a standard way of representing resources that will contain hypermedia information (links to related resources).
+
 ## Getting Started
 
 Build:
@@ -119,3 +125,5 @@ The project is broken down into two modules:
 
 * Spring's Getting Started Building a RESTful Web Service
   * https://spring.io/guides/gs/rest-service/
+* HAL - Hypertext Application Language
+  * http://stateless.co/hal_specification.html
