@@ -1,4 +1,4 @@
-package congo.cart.resource;
+package congo.cart.item.resource;
 
 public class ItemPostResource
 {

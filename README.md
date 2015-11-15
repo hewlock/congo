@@ -51,25 +51,25 @@ sample project easily digestible:
 
 ### Products
 
-GET http://localhost:8080/product/
+GET http://localhost:8080/products/
 
 Collection view of products.
 
-GET http://localhost:8080/product/1
+GET http://localhost:8080/products/1
 
 Details about a single product. 
 
 ### Shopping Cart
 
-GET http://localhost:8080/cart/
+GET http://localhost:8080/cart/items/
 
 Collection view of items contained in the shopping cart.
 
-GET http://localhost:8080/cart/1
+GET http://localhost:8080/cart/items/1
 
 Details about a single shopping cart item.
 
-POST http://localhost:8080/cart/
+POST http://localhost:8080/cart/items/
 
 Add a product to the shopping cart.
 
@@ -79,21 +79,21 @@ Add a product to the shopping cart.
 }
 ```
 
-DELETE http://localhost:8080/cart/1
+DELETE http://localhost:8080/cart/items/1
 
 Remove a product from the shopping cart.
 
 ### Orders
 
-GET http://localhost:8080/order/
+GET http://localhost:8080/orders/
 
 Collection view of orders.
 
-GET http://localhost:8080/cart/1
+GET http://localhost:8080/orders/1
 
 Details about a single order.
 
-POST http://localhost:8080/cart/
+POST http://localhost:8080/orders/
 
 Create a new order containing all products in the shopping cart.
 

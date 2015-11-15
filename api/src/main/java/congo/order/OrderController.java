@@ -23,7 +23,7 @@ import congo.order.resource.OrderGetResource;
 import congo.order.resource.OrderPostResource;
 
 @Controller
-@RequestMapping("/order")
+@RequestMapping("/orders")
 public class OrderController
 {
 	@Autowired

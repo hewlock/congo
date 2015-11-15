@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import congo.api.resource.ApiGetResource;
-import congo.cart.CartController;
+import congo.cart.item.ItemController;
 import congo.order.OrderController;
 import congo.product.ProductController;
 
@@ -25,7 +25,7 @@ public class ApiController
 	{
 		ApiGetResource resource = new ApiGetResource();
 		resource.add(linkTo(methodOn(ApiController.class).getApi()).withSelfRel());
-		resource.add(linkTo(methodOn(CartController.class).getCartItemList()).withRel("cart-items"));
+		resource.add(linkTo(methodOn(ItemController.class).getCartItemList()).withRel("shopping-cart-items"));
 		resource.add(linkTo(methodOn(OrderController.class).getOrderList()).withRel("orders"));
 		resource.add(linkTo(methodOn(ProductController.class).getProductList()).withRel("products"));
 		return new ResponseEntity<ApiGetResource>(resource, HttpStatus.OK);

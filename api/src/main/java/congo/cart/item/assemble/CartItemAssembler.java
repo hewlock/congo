@@ -1,11 +1,11 @@
-package congo.cart.assemble;
+package congo.cart.item.assemble;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import congo.Assembler;
 import congo.cart.CartItem;
-import congo.cart.resource.ItemPostResource;
+import congo.cart.item.resource.ItemPostResource;
 import congo.product.Product;
 import congo.product.ProductController;
 import congo.product.ProductService;

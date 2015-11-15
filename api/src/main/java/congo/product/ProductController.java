@@ -18,7 +18,7 @@ import congo.product.resource.ProductGetCollectionResource;
 import congo.product.resource.ProductGetResource;
 
 @Controller
-@RequestMapping("/product")
+@RequestMapping("/products")
 public class ProductController
 {
 	@Autowired

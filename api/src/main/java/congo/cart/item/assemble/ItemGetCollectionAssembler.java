@@ -1,4 +1,4 @@
-package congo.cart.assemble;
+package congo.cart.item.assemble;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 
 import congo.Assembler;
 import congo.EmbeddedResourceSupport;
-import congo.cart.CartController;
+import congo.cart.item.ItemController;
 import congo.cart.CartItem;
-import congo.cart.resource.ItemGetCollectionResource;
+import congo.cart.item.resource.ItemGetCollectionResource;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
 
@@ -48,8 +48,8 @@ public class ItemGetCollectionAssembler implements Assembler<Collection<CartItem
 	private Collection<Link> getCartItemListLinks()
 	{
 		Collection<Link> links = new ArrayList<Link>();
-		links.add(linkTo(methodOn(CartController.class).getCartItemList()).withSelfRel());
-		links.add(new Link(new UriTemplate(String.format("%s/{%s}", linkTo(CartController.class), "id")), "cart-item"));
+		links.add(linkTo(methodOn(ItemController.class).getCartItemList()).withSelfRel());
+		links.add(new Link(new UriTemplate(String.format("%s/{%s}", linkTo(ItemController.class), "id")), "shopping-cart-item"));
 		return links;
 	}
 

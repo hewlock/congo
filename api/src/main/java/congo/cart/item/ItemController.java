@@ -1,4 +1,4 @@
-package congo.cart;
+package congo.cart.item;
 
 import java.util.Collection;
 
@@ -13,16 +13,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import congo.cart.assemble.CartItemAssembler;
-import congo.cart.assemble.ItemGetAssembler;
-import congo.cart.assemble.ItemGetCollectionAssembler;
-import congo.cart.resource.ItemGetCollectionResource;
-import congo.cart.resource.ItemGetResource;
-import congo.cart.resource.ItemPostResource;
+import congo.cart.CartItem;
+import congo.cart.CartService;
+import congo.cart.item.assemble.CartItemAssembler;
+import congo.cart.item.assemble.ItemGetAssembler;
+import congo.cart.item.assemble.ItemGetCollectionAssembler;
+import congo.cart.item.resource.ItemGetCollectionResource;
+import congo.cart.item.resource.ItemGetResource;
+import congo.cart.item.resource.ItemPostResource;
 
 @Controller
-@RequestMapping("/cart")
-public class CartController
+@RequestMapping("/cart/items")
+public class ItemController
 {
 	@Autowired
 	CartService cartService;
