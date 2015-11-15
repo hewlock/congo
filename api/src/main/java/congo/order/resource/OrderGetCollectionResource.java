@@ -1,10 +1,10 @@
-package congo.order;
+package congo.order.resource;
 
 import org.springframework.hateoas.core.Relation;
 
 import congo.EmbeddedResourceSupport;
 
 @Relation("orders")
-public class OrderListResource extends EmbeddedResourceSupport
+public class OrderGetCollectionResource extends EmbeddedResourceSupport
 {
 }

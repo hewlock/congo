@@ -13,6 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import congo.cart.assemble.CartItemAssembler;
+import congo.cart.assemble.ItemGetAssembler;
+import congo.cart.assemble.ItemGetCollectionAssembler;
+import congo.cart.resource.ItemGetCollectionResource;
+import congo.cart.resource.ItemGetResource;
+import congo.cart.resource.ItemPostResource;
+
 @Controller
 @RequestMapping("/cart")
 public class CartController
@@ -21,45 +28,51 @@ public class CartController
 	CartService cartService;
 
 	@Autowired
-	CartAssembler cartAssembler;
+	ItemGetAssembler itemGetAssembler;
+
+	@Autowired
+	ItemGetCollectionAssembler itemGetCollectionAssembler;
+
+	@Autowired
+	CartItemAssembler itemPostAssembler;
 
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	@ResponseBody
-	public HttpEntity<CartItemListResource> getCartItemList()
+	public HttpEntity<ItemGetCollectionResource> getCartItemList()
 	{
 		Collection<CartItem> items = cartService.getAllCartItems();
-		CartItemListResource resource = cartAssembler.assemble(items);
-		return new ResponseEntity<CartItemListResource>(resource, HttpStatus.OK);
+		ItemGetCollectionResource resource = itemGetCollectionAssembler.assemble(items);
+		return new ResponseEntity<ItemGetCollectionResource>(resource, HttpStatus.OK);
 	}
 
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
-	public HttpEntity<CartItemResource> getCartItem(@PathVariable("id") long id)
+	public HttpEntity<ItemGetResource> getCartItem(@PathVariable("id") long id)
 	{
 		CartItem item = cartService.getCartItem(id);
 		if (null == item)
 		{
-			return new ResponseEntity<CartItemResource>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<ItemGetResource>(HttpStatus.NOT_FOUND);
 		}
-		CartItemResource resource = cartAssembler.assemble(item);
-		return new ResponseEntity<CartItemResource>(resource, HttpStatus.OK);
+		ItemGetResource resource = itemGetAssembler.assemble(item);
+		return new ResponseEntity<ItemGetResource>(resource, HttpStatus.OK);
 	}
 
 
 	@RequestMapping(value = "/", method = RequestMethod.POST)
 	@ResponseBody
-	public HttpEntity<CartItemResource> postCartItem(@RequestBody CartItemForm form)
+	public HttpEntity<ItemGetResource> postCartItem(@RequestBody ItemPostResource resource)
 	{
-		CartItem item = cartAssembler.assemble(form);
+		CartItem item = itemPostAssembler.assemble(resource);
 		if (!item.isValid())
 		{
-			return new ResponseEntity<CartItemResource>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<ItemGetResource>(HttpStatus.BAD_REQUEST);
 		}
 		CartItem persisted = cartService.saveItem(item);
-		CartItemResource resource = cartAssembler.assemble(persisted);
-		return new ResponseEntity<CartItemResource>(resource, HttpStatus.OK);
+		ItemGetResource response = itemGetAssembler.assemble(persisted);
+		return new ResponseEntity<ItemGetResource>(response, HttpStatus.OK);
 	}
 
 

@@ -1,4 +1,4 @@
-package congo.order;
+package congo.order.resource;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import congo.EmbeddedResourceSupport;
 
 @Relation("order")
-public class OrderResource extends EmbeddedResourceSupport
+public class OrderGetResource extends EmbeddedResourceSupport
 {
 	private final BigDecimal total;
 	private final String creditCardNumber;
@@ -18,11 +18,11 @@ public class OrderResource extends EmbeddedResourceSupport
 	private final Date time;
 
 
-	public OrderResource(
-			BigDecimal total,
-			String creditCardNumber,
-			String address,
-			Date time)
+	public OrderGetResource(
+		BigDecimal total,
+		String creditCardNumber,
+		String address,
+		Date time)
 	{
 		this.total = total;
 		this.creditCardNumber = creditCardNumber;

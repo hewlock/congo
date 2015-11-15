@@ -12,6 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import congo.product.assemble.ProductGetAssembler;
+import congo.product.assemble.ProductGetCollectionAssembler;
+import congo.product.resource.ProductGetCollectionResource;
+import congo.product.resource.ProductGetResource;
+
 @Controller
 @RequestMapping("/product")
 public class ProductController
@@ -20,29 +25,32 @@ public class ProductController
 	ProductService productService;
 
 	@Autowired
-	ProductAssembler productAssembler;
+	ProductGetAssembler productGetAssembler;
+
+	@Autowired
+	ProductGetCollectionAssembler productGetCollectionAssembler;
 
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	@ResponseBody
-	public HttpEntity<ProductListResource> getProductList()
+	public HttpEntity<ProductGetCollectionResource> getProductList()
 	{
 		Collection<Product> products = productService.getAllProducts();
-		ProductListResource resource = productAssembler.assemble(products);
-		return new ResponseEntity<ProductListResource>(resource, HttpStatus.OK);
+		ProductGetCollectionResource resource = productGetCollectionAssembler.assemble(products);
+		return new ResponseEntity<ProductGetCollectionResource>(resource, HttpStatus.OK);
 	}
 
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
-	public HttpEntity<ProductResource> getProduct(@PathVariable("id") long id)
+	public HttpEntity<ProductGetResource> getProduct(@PathVariable("id") long id)
 	{
 		Product product = productService.getProduct(id);
-		if(null == product)
+		if (null == product)
 		{
-			return new ResponseEntity<ProductResource>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<ProductGetResource>(HttpStatus.NOT_FOUND);
 		}
-		ProductResource resource = productAssembler.assemble(product);
-		return new ResponseEntity<ProductResource>(resource, HttpStatus.OK);
+		ProductGetResource resource = productGetAssembler.assemble(product);
+		return new ResponseEntity<ProductGetResource>(resource, HttpStatus.OK);
 	}
 }

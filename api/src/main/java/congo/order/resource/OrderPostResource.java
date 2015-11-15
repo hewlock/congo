@@ -1,6 +1,6 @@
-package congo.order;
+package congo.order.resource;
 
-public class OrderForm
+public class OrderPostResource
 {
 	private String creditCardNumber;
 	private String address;

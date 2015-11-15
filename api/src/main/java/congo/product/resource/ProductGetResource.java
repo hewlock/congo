@@ -1,4 +1,4 @@
-package congo.product;
+package congo.product.resource;
 
 import java.math.BigDecimal;
 
@@ -7,14 +7,14 @@ import org.springframework.hateoas.core.Relation;
 import congo.EmbeddedResourceSupport;
 
 @Relation("product")
-public class ProductResource extends EmbeddedResourceSupport
+public class ProductGetResource extends EmbeddedResourceSupport
 {
 	private final String name;
 	private final String description;
 	private final BigDecimal price;
 
 
-	public ProductResource(String name, BigDecimal price, String description)
+	public ProductGetResource(String name, BigDecimal price, String description)
 	{
 		this.name = name;
 		this.price = price;

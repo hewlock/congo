@@ -15,6 +15,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import congo.cart.CartService;
+import congo.order.assemble.OrderAssembler;
+import congo.order.assemble.OrderGetAssembler;
+import congo.order.assemble.OrderGetCollectionAssembler;
+import congo.order.resource.OrderGetCollectionResource;
+import congo.order.resource.OrderGetResource;
+import congo.order.resource.OrderPostResource;
 
 @Controller
 @RequestMapping("/order")
@@ -27,46 +33,52 @@ public class OrderController
 	CartService cartService;
 
 	@Autowired
+	OrderGetAssembler orderGetAssembler;
+
+	@Autowired
+	OrderGetCollectionAssembler orderGetCollectionAssembler;
+
+	@Autowired
 	OrderAssembler orderAssembler;
 
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	@ResponseBody
-	public HttpEntity<OrderListResource> getOrderList()
+	public HttpEntity<OrderGetCollectionResource> getOrderList()
 	{
 		Collection<Order> orders = orderService.getAllOrders();
-		OrderListResource resource = orderAssembler.assemble(orders);
-		return new ResponseEntity<OrderListResource>(resource, HttpStatus.OK);
+		OrderGetCollectionResource resource = orderGetCollectionAssembler.assemble(orders);
+		return new ResponseEntity<OrderGetCollectionResource>(resource, HttpStatus.OK);
 	}
 
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
-	public HttpEntity<OrderResource> getOrder(@PathVariable("id") long id)
+	public HttpEntity<OrderGetResource> getOrder(@PathVariable("id") long id)
 	{
 		Order order = orderService.getOrder(id);
 		if (null == order)
 		{
-			return new ResponseEntity<OrderResource>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<OrderGetResource>(HttpStatus.NOT_FOUND);
 		}
-		OrderResource resource = orderAssembler.assemble(order);
-		return new ResponseEntity<OrderResource>(resource, HttpStatus.OK);
+		OrderGetResource resource = orderGetAssembler.assemble(order);
+		return new ResponseEntity<OrderGetResource>(resource, HttpStatus.OK);
 	}
 
 
 	@RequestMapping(value = "/", method = RequestMethod.POST)
 	@ResponseBody
-	public HttpEntity<OrderResource> postOrder(@RequestBody OrderForm form)
+	public HttpEntity<OrderGetResource> postOrder(@RequestBody OrderPostResource resource)
 	{
-		Order order = orderAssembler.assemble(form);
+		Order order = orderAssembler.assemble(resource);
 		order.addAll(cartService.getAllCartItems());
 		if (!order.isValid())
 		{
-			return new ResponseEntity<OrderResource>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<OrderGetResource>(HttpStatus.BAD_REQUEST);
 		}
 		cartService.clear();
 		Order persisted = orderService.saveOrder(order);
-		OrderResource resource = orderAssembler.assemble(persisted);
-		return new ResponseEntity<OrderResource>(resource, HttpStatus.OK);
+		OrderGetResource response = orderGetAssembler.assemble(persisted);
+		return new ResponseEntity<OrderGetResource>(response, HttpStatus.OK);
 	}
 }

@@ -1,10 +1,10 @@
-package congo.product;
+package congo.product.resource;
 
 import org.springframework.hateoas.core.Relation;
 
 import congo.EmbeddedResourceSupport;
 
 @Relation("products")
-public class ProductListResource extends EmbeddedResourceSupport
+public class ProductGetCollectionResource extends EmbeddedResourceSupport
 {
 }

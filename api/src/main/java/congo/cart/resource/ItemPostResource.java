@@ -1,6 +1,6 @@
-package congo.cart;
+package congo.cart.resource;
 
-public class CartItemForm
+public class ItemPostResource
 {
 	private String product;
 

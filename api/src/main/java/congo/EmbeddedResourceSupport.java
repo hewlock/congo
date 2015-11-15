@@ -85,7 +85,7 @@ public class EmbeddedResourceSupport extends ResourceSupport
 
 	public void embed(String relation, Collection<EmbeddedResourceSupport> resources)
 	{
-		for(EmbeddedResourceSupport resource : resources)
+		for (EmbeddedResourceSupport resource : resources)
 		{
 			embed(relation, resource);
 		}

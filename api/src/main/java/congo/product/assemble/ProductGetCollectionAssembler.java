@@ -1,41 +1,32 @@
-package congo.product;
+package congo.product.assemble;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.UriTemplate;
 import org.springframework.stereotype.Service;
 
+import congo.Assembler;
 import congo.EmbeddedResourceSupport;
+import congo.product.Product;
+import congo.product.ProductController;
+import congo.product.resource.ProductGetCollectionResource;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
 
 @Service
-class ProductAssemblerImpl implements ProductAssembler
+public class ProductGetCollectionAssembler implements Assembler<Collection<Product>, ProductGetCollectionResource>
 {
-	@Override
-	public ProductResource assemble(Product product)
-	{
-		ProductResource resource = new ProductResource(product.getName(), product.getPrice(), product.getDescription());
-		resource.add(getProductLinks(product));
-		return resource;
-	}
-
-
-	private Collection<Link> getProductLinks(Product product)
-	{
-		Collection<Link> links = new ArrayList<Link>();
-		links.add(linkTo(methodOn(ProductController.class).getProduct(product.getId())).withSelfRel());
-		links.add(linkTo(methodOn(ProductController.class).getProductList()).withRel("products"));
-		return links;
-	}
+	@Autowired
+	ProductGetAssembler productGetAssembler;
 
 
 	@Override
-	public ProductListResource assemble(Collection<Product> products)
+	public ProductGetCollectionResource assemble(Collection<Product> products)
 	{
-		ProductListResource resource = new ProductListResource();
+		ProductGetCollectionResource resource = new ProductGetCollectionResource();
 		resource.add(getProductListLinks());
 		resource.embed(getProductListEmbeds(products));
 		return resource;
@@ -56,7 +47,7 @@ class ProductAssemblerImpl implements ProductAssembler
 		Collection<EmbeddedResourceSupport> resources = new ArrayList<EmbeddedResourceSupport>();
 		for (Product product : products)
 		{
-			resources.add(assemble(product));
+			resources.add(productGetAssembler.assemble(product));
 		}
 		return resources;
 	}
