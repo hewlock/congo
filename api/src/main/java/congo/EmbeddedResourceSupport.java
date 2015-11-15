@@ -18,6 +18,7 @@ public class EmbeddedResourceSupport extends ResourceSupport
 
 
 	@JsonInclude(JsonInclude.Include.NON_EMPTY)
+	@JsonProperty("_counts")
 	public Map<String, Integer> getCounts()
 	{
 		Map<String, Integer> counts = new HashMap<String, Integer>();
