@@ -10,10 +10,10 @@ import congo.order.resource.OrderPostResource;
 public class OrderAssembler implements Assembler<OrderPostResource, Order>
 {
 	@Override
-	public Order assemble(OrderPostResource form)
+	public Order assemble(OrderPostResource resource)
 	{
 		return new Order(
-			form.getCreditCardNumber(),
-			form.getAddress());
+			resource.getCreditCardNumber(),
+			resource.getAddress());
 	}
 }

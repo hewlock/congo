@@ -19,7 +19,7 @@ public class ProductGetAssembler implements Assembler<Product, ProductGetResourc
 	@Override
 	public ProductGetResource assemble(Product product)
 	{
-		ProductGetResource resource = new ProductGetResource(product.getName(), product.getPrice(), product.getDescription());
+		ProductGetResource resource = new ProductGetResource(product.getName(), product.getDescription(), product.getPrice());
 		resource.add(getProductLinks(product));
 		return resource;
 	}

@@ -14,11 +14,11 @@ public class ProductGetResource extends EmbeddedResourceSupport
 	private final BigDecimal price;
 
 
-	public ProductGetResource(String name, BigDecimal price, String description)
+	public ProductGetResource(String name, String description, BigDecimal price)
 	{
 		this.name = name;
-		this.price = price;
 		this.description = description;
+		this.price = price;
 	}
 
 
@@ -28,14 +28,14 @@ public class ProductGetResource extends EmbeddedResourceSupport
 	}
 
 
-	public BigDecimal getPrice()
-	{
-		return price;
-	}
-
-
 	public String getDescription()
 	{
 		return description;
+	}
+
+
+	public BigDecimal getPrice()
+	{
+		return price;
 	}
 }
