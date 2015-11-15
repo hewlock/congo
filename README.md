@@ -22,7 +22,7 @@ Run (either way should work):
 * gradlew run
 
 Test:
-* http://localhost:8080/product/
+* http://localhost:8080/api/
 
 ## Project Overview
 
