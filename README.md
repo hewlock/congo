@@ -18,7 +18,7 @@ Generate Project Files (depending on IDE):
 * gradlew idea
 * gradlew eclipse
 
-Run (either way should work):
+Run:
 * gradlew run
 
 Test:
