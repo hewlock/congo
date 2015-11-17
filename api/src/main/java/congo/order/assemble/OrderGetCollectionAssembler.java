@@ -5,10 +5,10 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
+import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.hateoas.UriTemplate;
 import org.springframework.stereotype.Service;
 
-import congo.Assembler;
 import congo.EmbeddedResourceSupport;
 import congo.order.Order;
 import congo.order.OrderController;
@@ -17,14 +17,14 @@ import congo.order.resource.OrderGetCollectionResource;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
 
 @Service
-public class OrderGetCollectionAssembler implements Assembler<Collection<Order>, OrderGetCollectionResource>
+public class OrderGetCollectionAssembler implements ResourceAssembler<Collection<Order>, OrderGetCollectionResource>
 {
 	@Autowired
 	OrderGetAssembler orderGetAssembler;
 
 
 	@Override
-	public OrderGetCollectionResource assemble(Collection<Order> orders)
+	public OrderGetCollectionResource toResource(Collection<Order> orders)
 	{
 		OrderGetCollectionResource resource = new OrderGetCollectionResource();
 		resource.add(getOrderListLinks());
@@ -47,7 +47,7 @@ public class OrderGetCollectionAssembler implements Assembler<Collection<Order>,
 		Collection<EmbeddedResourceSupport> resources = new ArrayList<EmbeddedResourceSupport>();
 		for (Order order : orders)
 		{
-			resources.add(orderGetAssembler.assemble(order));
+			resources.add(orderGetAssembler.toResource(order));
 		}
 		return resources;
 	}

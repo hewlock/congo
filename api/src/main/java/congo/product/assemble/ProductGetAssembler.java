@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.hateoas.Link;
+import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.stereotype.Service;
 
-import congo.Assembler;
 import congo.product.Product;
 import congo.product.ProductController;
 import congo.product.resource.ProductGetResource;
@@ -14,10 +14,10 @@ import congo.product.resource.ProductGetResource;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
 
 @Service
-public class ProductGetAssembler implements Assembler<Product, ProductGetResource>
+public class ProductGetAssembler implements ResourceAssembler<Product, ProductGetResource>
 {
 	@Override
-	public ProductGetResource assemble(Product product)
+	public ProductGetResource toResource(Product product)
 	{
 		ProductGetResource resource = new ProductGetResource(product.getName(), product.getDescription(), product.getPrice());
 		resource.add(getProductLinks(product));

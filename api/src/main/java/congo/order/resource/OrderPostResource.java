@@ -1,6 +1,8 @@
 package congo.order.resource;
 
-public class OrderPostResource
+import org.springframework.hateoas.ResourceSupport;
+
+public class OrderPostResource extends ResourceSupport
 {
 	private String creditCardNumber;
 	private String address;

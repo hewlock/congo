@@ -36,7 +36,7 @@ public class ProductController
 	public HttpEntity<ProductGetCollectionResource> getProductList()
 	{
 		Collection<Product> products = productService.getAllProducts();
-		ProductGetCollectionResource resource = productGetCollectionAssembler.assemble(products);
+		ProductGetCollectionResource resource = productGetCollectionAssembler.toResource(products);
 		return new ResponseEntity<ProductGetCollectionResource>(resource, HttpStatus.OK);
 	}
 
@@ -50,7 +50,7 @@ public class ProductController
 		{
 			return new ResponseEntity<ProductGetResource>(HttpStatus.NOT_FOUND);
 		}
-		ProductGetResource resource = productGetAssembler.assemble(product);
+		ProductGetResource resource = productGetAssembler.toResource(product);
 		return new ResponseEntity<ProductGetResource>(resource, HttpStatus.OK);
 	}
 }

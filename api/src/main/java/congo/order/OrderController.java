@@ -47,7 +47,7 @@ public class OrderController
 	public HttpEntity<OrderGetCollectionResource> getOrderList()
 	{
 		Collection<Order> orders = orderService.getAllOrders();
-		OrderGetCollectionResource resource = orderGetCollectionAssembler.assemble(orders);
+		OrderGetCollectionResource resource = orderGetCollectionAssembler.toResource(orders);
 		return new ResponseEntity<OrderGetCollectionResource>(resource, HttpStatus.OK);
 	}
 
@@ -61,7 +61,7 @@ public class OrderController
 		{
 			return new ResponseEntity<OrderGetResource>(HttpStatus.NOT_FOUND);
 		}
-		OrderGetResource resource = orderGetAssembler.assemble(order);
+		OrderGetResource resource = orderGetAssembler.toResource(order);
 		return new ResponseEntity<OrderGetResource>(resource, HttpStatus.OK);
 	}
 
@@ -70,7 +70,7 @@ public class OrderController
 	@ResponseBody
 	public HttpEntity<OrderGetResource> postOrder(@RequestBody OrderPostResource resource)
 	{
-		Order order = orderAssembler.assemble(resource);
+		Order order = orderAssembler.fromResource(resource);
 		order.addAll(cartService.getAllCartItems());
 		if (!order.isValid())
 		{
@@ -78,7 +78,7 @@ public class OrderController
 		}
 		cartService.clear();
 		Order persisted = orderService.saveOrder(order);
-		OrderGetResource response = orderGetAssembler.assemble(persisted);
+		OrderGetResource response = orderGetAssembler.toResource(persisted);
 		return new ResponseEntity<OrderGetResource>(response, HttpStatus.OK);
 	}
 }

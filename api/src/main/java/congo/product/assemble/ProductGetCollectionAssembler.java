@@ -5,10 +5,10 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
+import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.hateoas.UriTemplate;
 import org.springframework.stereotype.Service;
 
-import congo.Assembler;
 import congo.EmbeddedResourceSupport;
 import congo.product.Product;
 import congo.product.ProductController;
@@ -17,14 +17,14 @@ import congo.product.resource.ProductGetCollectionResource;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
 
 @Service
-public class ProductGetCollectionAssembler implements Assembler<Collection<Product>, ProductGetCollectionResource>
+public class ProductGetCollectionAssembler implements ResourceAssembler<Collection<Product>, ProductGetCollectionResource>
 {
 	@Autowired
 	ProductGetAssembler productGetAssembler;
 
 
 	@Override
-	public ProductGetCollectionResource assemble(Collection<Product> products)
+	public ProductGetCollectionResource toResource(Collection<Product> products)
 	{
 		ProductGetCollectionResource resource = new ProductGetCollectionResource();
 		resource.add(getProductListLinks());
@@ -47,7 +47,7 @@ public class ProductGetCollectionAssembler implements Assembler<Collection<Produ
 		Collection<EmbeddedResourceSupport> resources = new ArrayList<EmbeddedResourceSupport>();
 		for (Product product : products)
 		{
-			resources.add(productGetAssembler.assemble(product));
+			resources.add(productGetAssembler.toResource(product));
 		}
 		return resources;
 	}

@@ -44,7 +44,7 @@ public class ItemController
 	public HttpEntity<ItemGetCollectionResource> getCartItemList()
 	{
 		Collection<CartItem> items = cartService.getAllCartItems();
-		ItemGetCollectionResource resource = itemGetCollectionAssembler.assemble(items);
+		ItemGetCollectionResource resource = itemGetCollectionAssembler.toResource(items);
 		return new ResponseEntity<ItemGetCollectionResource>(resource, HttpStatus.OK);
 	}
 
@@ -58,7 +58,7 @@ public class ItemController
 		{
 			return new ResponseEntity<ItemGetResource>(HttpStatus.NOT_FOUND);
 		}
-		ItemGetResource resource = itemGetAssembler.assemble(item);
+		ItemGetResource resource = itemGetAssembler.toResource(item);
 		return new ResponseEntity<ItemGetResource>(resource, HttpStatus.OK);
 	}
 
@@ -67,13 +67,13 @@ public class ItemController
 	@ResponseBody
 	public HttpEntity<ItemGetResource> postCartItem(@RequestBody ItemPostResource resource)
 	{
-		CartItem item = itemPostAssembler.assemble(resource);
+		CartItem item = itemPostAssembler.fromResource(resource);
 		if (!item.isValid())
 		{
 			return new ResponseEntity<ItemGetResource>(HttpStatus.BAD_REQUEST);
 		}
 		CartItem persisted = cartService.saveItem(item);
-		ItemGetResource response = itemGetAssembler.assemble(persisted);
+		ItemGetResource response = itemGetAssembler.toResource(persisted);
 		return new ResponseEntity<ItemGetResource>(response, HttpStatus.OK);
 	}
 

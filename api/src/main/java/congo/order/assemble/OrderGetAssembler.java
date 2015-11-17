@@ -6,9 +6,9 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
+import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.stereotype.Service;
 
-import congo.Assembler;
 import congo.EmbeddedResourceSupport;
 import congo.order.Order;
 import congo.order.OrderController;
@@ -20,14 +20,14 @@ import congo.product.assemble.ProductGetAssembler;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
 
 @Service
-public class OrderGetAssembler implements Assembler<Order, OrderGetResource>
+public class OrderGetAssembler implements ResourceAssembler<Order, OrderGetResource>
 {
 	@Autowired
 	ProductGetAssembler productGetAssembler;
 
 
 	@Override
-	public OrderGetResource assemble(Order order)
+	public OrderGetResource toResource(Order order)
 	{
 		OrderGetResource resource = new OrderGetResource(
 			getTotal(order.getProducts()),
@@ -56,7 +56,7 @@ public class OrderGetAssembler implements Assembler<Order, OrderGetResource>
 		Collection<Link> links = new ArrayList<Link>();
 		links.add(linkTo(methodOn(OrderController.class).getOrder(order.getId())).withSelfRel());
 		links.add(linkTo(methodOn(OrderController.class).getOrderList()).withRel("orders"));
-		for(Product product : order.getProducts())
+		for (Product product : order.getProducts())
 		{
 			links.add(linkTo(methodOn(ProductController.class).getProduct(product.getId())).withRel("product"));
 		}
@@ -69,7 +69,7 @@ public class OrderGetAssembler implements Assembler<Order, OrderGetResource>
 		Collection<EmbeddedResourceSupport> resources = new ArrayList<EmbeddedResourceSupport>();
 		for (Product product : order.getProducts())
 		{
-			resources.add(productGetAssembler.assemble(product));
+			resources.add(productGetAssembler.toResource(product));
 		}
 		return resources;
 	}

@@ -1,6 +1,8 @@
 package congo.cart.item.resource;
 
-public class ItemPostResource
+import org.springframework.hateoas.ResourceSupport;
+
+public class ItemPostResource extends ResourceSupport
 {
 	private String product;
 

@@ -6,26 +6,26 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
+import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.hateoas.UriTemplate;
 import org.springframework.stereotype.Service;
 
-import congo.Assembler;
 import congo.EmbeddedResourceSupport;
-import congo.cart.item.ItemController;
 import congo.cart.CartItem;
+import congo.cart.item.ItemController;
 import congo.cart.item.resource.ItemGetCollectionResource;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
 
 @Service
-public class ItemGetCollectionAssembler implements Assembler<Collection<CartItem>, ItemGetCollectionResource>
+public class ItemGetCollectionAssembler implements ResourceAssembler<Collection<CartItem>, ItemGetCollectionResource>
 {
 	@Autowired
 	ItemGetAssembler itemGetAssembler;
 
 
 	@Override
-	public ItemGetCollectionResource assemble(Collection<CartItem> items)
+	public ItemGetCollectionResource toResource(Collection<CartItem> items)
 	{
 		ItemGetCollectionResource resource = new ItemGetCollectionResource(getTotal(items));
 		resource.add(getCartItemListLinks());
@@ -59,7 +59,7 @@ public class ItemGetCollectionAssembler implements Assembler<Collection<CartItem
 		Collection<EmbeddedResourceSupport> resources = new ArrayList<EmbeddedResourceSupport>();
 		for (CartItem item : items)
 		{
-			resources.add(itemGetAssembler.assemble(item));
+			resources.add(itemGetAssembler.toResource(item));
 		}
 		return resources;
 	}
