@@ -42,7 +42,7 @@ public class OrderController
 	OrderAssembler orderAssembler;
 
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@RequestMapping(value = "/", method = RequestMethod.GET, produces = {"application/json"})
 	@ResponseBody
 	public HttpEntity<OrderGetCollectionResource> getOrderList()
 	{
@@ -52,7 +52,7 @@ public class OrderController
 	}
 
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = {"application/json"})
 	@ResponseBody
 	public HttpEntity<OrderGetResource> getOrder(@PathVariable("id") long id)
 	{
@@ -66,7 +66,7 @@ public class OrderController
 	}
 
 
-	@RequestMapping(value = "/", method = RequestMethod.POST)
+	@RequestMapping(value = "/", method = RequestMethod.POST, produces = {"application/json"})
 	@ResponseBody
 	public HttpEntity<OrderGetResource> postOrder(@RequestBody OrderPostResource resource)
 	{

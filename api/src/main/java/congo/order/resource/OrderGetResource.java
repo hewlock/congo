@@ -3,14 +3,15 @@ package congo.order.resource;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.ResourceSupport;
+import org.springframework.hateoas.Resources;
 import org.springframework.hateoas.core.Relation;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import congo.EmbeddedResourceSupport;
-
-@Relation("order")
-public class OrderGetResource extends EmbeddedResourceSupport
+@Relation(value = "order", collectionRelation = "order")
+public class OrderGetResource extends Resources<ResourceSupport>
 {
 	private final BigDecimal total;
 	private final String creditCardNumber;
@@ -22,8 +23,11 @@ public class OrderGetResource extends EmbeddedResourceSupport
 		BigDecimal total,
 		String creditCardNumber,
 		String address,
-		Date time)
+		Date time,
+		Iterable<ResourceSupport> content,
+		Iterable<Link> links)
 	{
+		super(content, links);
 		this.total = total;
 		this.creditCardNumber = creditCardNumber;
 		this.address = address;

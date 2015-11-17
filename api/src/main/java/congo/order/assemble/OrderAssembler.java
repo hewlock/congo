@@ -12,8 +12,6 @@ public class OrderAssembler implements DomainAssembler<OrderPostResource, Order>
 	@Override
 	public Order fromResource(OrderPostResource resource)
 	{
-		return new Order(
-			resource.getCreditCardNumber(),
-			resource.getAddress());
+		return new Order(resource.getCreditCardNumber(), resource.getAddress());
 	}
 }

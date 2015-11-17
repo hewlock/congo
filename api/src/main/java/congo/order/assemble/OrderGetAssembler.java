@@ -6,12 +6,14 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
+import org.springframework.hateoas.RelProvider;
 import org.springframework.hateoas.ResourceAssembler;
+import org.springframework.hateoas.ResourceSupport;
 import org.springframework.stereotype.Service;
 
-import congo.EmbeddedResourceSupport;
 import congo.order.Order;
 import congo.order.OrderController;
+import congo.order.resource.OrderGetCollectionResource;
 import congo.order.resource.OrderGetResource;
 import congo.product.Product;
 import congo.product.ProductController;
@@ -23,20 +25,22 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
 public class OrderGetAssembler implements ResourceAssembler<Order, OrderGetResource>
 {
 	@Autowired
+	RelProvider relProvider;
+
+	@Autowired
 	ProductGetAssembler productGetAssembler;
 
 
 	@Override
 	public OrderGetResource toResource(Order order)
 	{
-		OrderGetResource resource = new OrderGetResource(
+		return new OrderGetResource(
 			getTotal(order.getProducts()),
 			order.getCreditCardNumber(),
 			order.getAddress(),
-			order.getTime());
-		resource.add(getOrderLinks(order));
-		resource.embed(getOrderEmbeds(order));
-		return resource;
+			order.getTime(),
+			getEmbeds(order),
+			getLinks(order));
 	}
 
 
@@ -51,11 +55,12 @@ public class OrderGetAssembler implements ResourceAssembler<Order, OrderGetResou
 	}
 
 
-	private Collection<Link> getOrderLinks(Order order)
+	private Collection<Link> getLinks(Order order)
 	{
 		Collection<Link> links = new ArrayList<Link>();
 		links.add(linkTo(methodOn(OrderController.class).getOrder(order.getId())).withSelfRel());
-		links.add(linkTo(methodOn(OrderController.class).getOrderList()).withRel("orders"));
+		links.add(linkTo(methodOn(OrderController.class).getOrderList())
+			.withRel(relProvider.getItemResourceRelFor(OrderGetCollectionResource.class)));
 		for (Product product : order.getProducts())
 		{
 			links.add(linkTo(methodOn(ProductController.class).getProduct(product.getId())).withRel("product"));
@@ -64,9 +69,9 @@ public class OrderGetAssembler implements ResourceAssembler<Order, OrderGetResou
 	}
 
 
-	public Collection<EmbeddedResourceSupport> getOrderEmbeds(Order order)
+	public Collection<ResourceSupport> getEmbeds(Order order)
 	{
-		Collection<EmbeddedResourceSupport> resources = new ArrayList<EmbeddedResourceSupport>();
+		Collection<ResourceSupport> resources = new ArrayList<ResourceSupport>();
 		for (Product product : order.getProducts())
 		{
 			resources.add(productGetAssembler.toResource(product));

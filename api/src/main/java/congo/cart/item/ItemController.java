@@ -39,7 +39,7 @@ public class ItemController
 	CartItemAssembler itemPostAssembler;
 
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@RequestMapping(value = "/", method = RequestMethod.GET, produces = {"application/json"})
 	@ResponseBody
 	public HttpEntity<ItemGetCollectionResource> getCartItemList()
 	{
@@ -49,7 +49,7 @@ public class ItemController
 	}
 
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = {"application/json"})
 	@ResponseBody
 	public HttpEntity<ItemGetResource> getCartItem(@PathVariable("id") long id)
 	{
@@ -63,7 +63,7 @@ public class ItemController
 	}
 
 
-	@RequestMapping(value = "/", method = RequestMethod.POST)
+	@RequestMapping(value = "/", method = RequestMethod.POST, produces = {"application/json"})
 	@ResponseBody
 	public HttpEntity<ItemGetResource> postCartItem(@RequestBody ItemPostResource resource)
 	{

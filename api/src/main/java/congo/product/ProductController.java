@@ -31,7 +31,7 @@ public class ProductController
 	ProductGetCollectionAssembler productGetCollectionAssembler;
 
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@RequestMapping(value = "/", method = RequestMethod.GET, produces = {"application/json"})
 	@ResponseBody
 	public HttpEntity<ProductGetCollectionResource> getProductList()
 	{
@@ -41,7 +41,7 @@ public class ProductController
 	}
 
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = {"application/json"})
 	@ResponseBody
 	public HttpEntity<ProductGetResource> getProduct(@PathVariable("id") long id)
 	{
