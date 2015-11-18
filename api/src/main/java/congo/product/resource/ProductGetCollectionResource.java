@@ -5,7 +5,7 @@ import org.springframework.hateoas.ResourceSupport;
 import org.springframework.hateoas.Resources;
 import org.springframework.hateoas.core.Relation;
 
-@Relation(value = "products", collectionRelation = "products")
+@Relation(value = "congo:products", collectionRelation = "congo:products")
 public class ProductGetCollectionResource extends Resources<ResourceSupport>
 {
 	public ProductGetCollectionResource(Iterable<ResourceSupport> content, Iterable<Link> links)

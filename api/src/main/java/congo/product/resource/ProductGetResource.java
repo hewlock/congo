@@ -7,7 +7,7 @@ import org.springframework.hateoas.ResourceSupport;
 import org.springframework.hateoas.Resources;
 import org.springframework.hateoas.core.Relation;
 
-@Relation(value = "product", collectionRelation = "product")
+@Relation(value = "congo:product", collectionRelation = "congo:product")
 public class ProductGetResource extends Resources<ResourceSupport>
 {
 	private final String name;

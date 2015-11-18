@@ -7,7 +7,7 @@ import org.springframework.hateoas.ResourceSupport;
 import org.springframework.hateoas.Resources;
 import org.springframework.hateoas.core.Relation;
 
-@Relation(value = "shopping-cart", collectionRelation = "shopping-cart")
+@Relation(value = "congo:shopping-cart", collectionRelation = "congo:shopping-cart")
 public class ItemGetCollectionResource extends Resources<ResourceSupport>
 {
 	private final BigDecimal total;

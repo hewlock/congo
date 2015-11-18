@@ -10,7 +10,7 @@ import org.springframework.hateoas.core.Relation;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-@Relation(value = "order", collectionRelation = "order")
+@Relation(value = "congo:order", collectionRelation = "congo:order")
 public class OrderGetResource extends Resources<ResourceSupport>
 {
 	private final BigDecimal total;

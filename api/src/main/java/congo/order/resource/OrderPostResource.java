@@ -3,7 +3,7 @@ package congo.order.resource;
 import org.springframework.hateoas.ResourceSupport;
 import org.springframework.hateoas.core.Relation;
 
-@Relation(value = "order", collectionRelation = "order")
+@Relation(value = "congo:order", collectionRelation = "congo:order")
 public class OrderPostResource extends ResourceSupport
 {
 	private String creditCardNumber;
