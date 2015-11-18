@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import congo.product.assemble.ProductGetAssembler;
-import congo.product.assemble.ProductGetCollectionAssembler;
-import congo.product.resource.ProductGetCollectionResource;
-import congo.product.resource.ProductGetResource;
+import congo.product.assemble.ProductAssembler;
+import congo.product.assemble.ProductCollectionAssembler;
+import congo.product.resource.ProductCollectionResource;
+import congo.product.resource.ProductResource;
 
 @Controller
 @RequestMapping("/products")
@@ -25,32 +25,32 @@ public class ProductController
 	ProductService productService;
 
 	@Autowired
-	ProductGetAssembler productGetAssembler;
+	ProductAssembler productAssembler;
 
 	@Autowired
-	ProductGetCollectionAssembler productGetCollectionAssembler;
+	ProductCollectionAssembler productCollectionAssembler;
 
 
 	@RequestMapping(value = "/", method = RequestMethod.GET, produces = {"application/json"})
 	@ResponseBody
-	public HttpEntity<ProductGetCollectionResource> getProductList()
+	public HttpEntity<ProductCollectionResource> getProductList()
 	{
 		Collection<Product> products = productService.getAllProducts();
-		ProductGetCollectionResource resource = productGetCollectionAssembler.toResource(products);
-		return new ResponseEntity<ProductGetCollectionResource>(resource, HttpStatus.OK);
+		ProductCollectionResource resource = productCollectionAssembler.toResource(products);
+		return new ResponseEntity<ProductCollectionResource>(resource, HttpStatus.OK);
 	}
 
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = {"application/json"})
 	@ResponseBody
-	public HttpEntity<ProductGetResource> getProduct(@PathVariable("id") long id)
+	public HttpEntity<ProductResource> getProduct(@PathVariable("id") long id)
 	{
 		Product product = productService.getProduct(id);
 		if (null == product)
 		{
-			return new ResponseEntity<ProductGetResource>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<ProductResource>(HttpStatus.NOT_FOUND);
 		}
-		ProductGetResource resource = productGetAssembler.toResource(product);
-		return new ResponseEntity<ProductGetResource>(resource, HttpStatus.OK);
+		ProductResource resource = productAssembler.toResource(product);
+		return new ResponseEntity<ProductResource>(resource, HttpStatus.OK);
 	}
 }

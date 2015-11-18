@@ -8,14 +8,14 @@ import org.springframework.hateoas.Resources;
 import org.springframework.hateoas.core.Relation;
 
 @Relation(value = "congo:product", collectionRelation = "congo:product")
-public class ProductGetResource extends Resources<ResourceSupport>
+public class ProductResource extends Resources<ResourceSupport>
 {
 	private final String name;
 	private final String description;
 	private final BigDecimal price;
 
 
-	public ProductGetResource(
+	public ProductResource(
 		String name,
 		String description,
 		BigDecimal price,

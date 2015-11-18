@@ -14,25 +14,25 @@ import org.springframework.stereotype.Service;
 
 import congo.cart.CartItem;
 import congo.cart.item.ItemController;
-import congo.cart.item.resource.ItemGetCollectionResource;
-import congo.cart.item.resource.ItemGetResource;
+import congo.cart.item.resource.ItemCollectionResource;
+import congo.cart.item.resource.ItemResource;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
 
 @Service
-public class ItemGetCollectionAssembler implements ResourceAssembler<Collection<CartItem>, ItemGetCollectionResource>
+public class ItemCollectionAssembler implements ResourceAssembler<Collection<CartItem>, ItemCollectionResource>
 {
 	@Autowired
 	RelProvider relProvider;
 
 	@Autowired
-	ItemGetAssembler itemGetAssembler;
+	ItemAssembler itemAssembler;
 
 
 	@Override
-	public ItemGetCollectionResource toResource(Collection<CartItem> items)
+	public ItemCollectionResource toResource(Collection<CartItem> items)
 	{
-		return new ItemGetCollectionResource(getTotal(items), getEmbeds(items), getLinks());
+		return new ItemCollectionResource(getTotal(items), getEmbeds(items), getLinks());
 	}
 
 
@@ -52,7 +52,7 @@ public class ItemGetCollectionAssembler implements ResourceAssembler<Collection<
 		Collection<Link> links = new ArrayList<Link>();
 		links.add(linkTo(methodOn(ItemController.class).getCartItemList()).withSelfRel());
 		links.add(new Link(new UriTemplate(String.format("%s/{%s}", linkTo(ItemController.class), "id")),
-			relProvider.getItemResourceRelFor(ItemGetResource.class)));
+			relProvider.getItemResourceRelFor(ItemResource.class)));
 		return links;
 	}
 
@@ -62,7 +62,7 @@ public class ItemGetCollectionAssembler implements ResourceAssembler<Collection<
 		Collection<ResourceSupport> resources = new ArrayList<ResourceSupport>();
 		for (CartItem item : items)
 		{
-			resources.add(itemGetAssembler.toResource(item));
+			resources.add(itemAssembler.toResource(item));
 		}
 		return resources;
 	}

@@ -6,7 +6,7 @@ import org.springframework.hateoas.core.Relation;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Relation(value = "congo:shopping-cart-item", collectionRelation = "congo:shopping-cart-item")
-public class ItemPostResource extends ResourceSupport
+public class ItemForm extends ResourceSupport
 {
 	private String product;
 

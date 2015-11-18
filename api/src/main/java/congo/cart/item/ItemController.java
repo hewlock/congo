@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import congo.cart.CartItem;
 import congo.cart.CartService;
-import congo.cart.item.assemble.CartItemAssembler;
-import congo.cart.item.assemble.ItemGetAssembler;
-import congo.cart.item.assemble.ItemGetCollectionAssembler;
-import congo.cart.item.resource.ItemGetCollectionResource;
-import congo.cart.item.resource.ItemGetResource;
-import congo.cart.item.resource.ItemPostResource;
+import congo.cart.item.assemble.CartItemFactory;
+import congo.cart.item.assemble.ItemAssembler;
+import congo.cart.item.assemble.ItemCollectionAssembler;
+import congo.cart.item.resource.ItemCollectionResource;
+import congo.cart.item.resource.ItemResource;
+import congo.cart.item.resource.ItemForm;
 
 @Controller
 @RequestMapping("/cart/items")
@@ -30,51 +30,51 @@ public class ItemController
 	CartService cartService;
 
 	@Autowired
-	ItemGetAssembler itemGetAssembler;
+	ItemAssembler itemAssembler;
 
 	@Autowired
-	ItemGetCollectionAssembler itemGetCollectionAssembler;
+	ItemCollectionAssembler itemCollectionAssembler;
 
 	@Autowired
-	CartItemAssembler itemPostAssembler;
+	CartItemFactory cartItemFactory;
 
 
 	@RequestMapping(value = "/", method = RequestMethod.GET, produces = {"application/json"})
 	@ResponseBody
-	public HttpEntity<ItemGetCollectionResource> getCartItemList()
+	public HttpEntity<ItemCollectionResource> getCartItemList()
 	{
 		Collection<CartItem> items = cartService.getAllCartItems();
-		ItemGetCollectionResource resource = itemGetCollectionAssembler.toResource(items);
-		return new ResponseEntity<ItemGetCollectionResource>(resource, HttpStatus.OK);
+		ItemCollectionResource resource = itemCollectionAssembler.toResource(items);
+		return new ResponseEntity<ItemCollectionResource>(resource, HttpStatus.OK);
 	}
 
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = {"application/json"})
 	@ResponseBody
-	public HttpEntity<ItemGetResource> getCartItem(@PathVariable("id") long id)
+	public HttpEntity<ItemResource> getCartItem(@PathVariable("id") long id)
 	{
 		CartItem item = cartService.getCartItem(id);
 		if (null == item)
 		{
-			return new ResponseEntity<ItemGetResource>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<ItemResource>(HttpStatus.NOT_FOUND);
 		}
-		ItemGetResource resource = itemGetAssembler.toResource(item);
-		return new ResponseEntity<ItemGetResource>(resource, HttpStatus.OK);
+		ItemResource resource = itemAssembler.toResource(item);
+		return new ResponseEntity<ItemResource>(resource, HttpStatus.OK);
 	}
 
 
 	@RequestMapping(value = "/", method = RequestMethod.POST, produces = {"application/json"})
 	@ResponseBody
-	public HttpEntity<ItemGetResource> postCartItem(@RequestBody ItemPostResource resource)
+	public HttpEntity<ItemResource> postCartItem(@RequestBody ItemForm resource)
 	{
-		CartItem item = itemPostAssembler.fromResource(resource);
+		CartItem item = cartItemFactory.fromResource(resource);
 		if (!item.isValid())
 		{
-			return new ResponseEntity<ItemGetResource>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<ItemResource>(HttpStatus.BAD_REQUEST);
 		}
 		CartItem persisted = cartService.saveItem(item);
-		ItemGetResource response = itemGetAssembler.toResource(persisted);
-		return new ResponseEntity<ItemGetResource>(response, HttpStatus.OK);
+		ItemResource response = itemAssembler.toResource(persisted);
+		return new ResponseEntity<ItemResource>(response, HttpStatus.OK);
 	}
 
 

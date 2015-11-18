@@ -11,7 +11,7 @@ import org.springframework.hateoas.core.Relation;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Relation(value = "congo:order", collectionRelation = "congo:order")
-public class OrderGetResource extends Resources<ResourceSupport>
+public class OrderResource extends Resources<ResourceSupport>
 {
 	private final BigDecimal total;
 	private final String creditCardNumber;
@@ -19,7 +19,7 @@ public class OrderGetResource extends Resources<ResourceSupport>
 	private final Date time;
 
 
-	public OrderGetResource(
+	public OrderResource(
 		BigDecimal total,
 		String creditCardNumber,
 		String address,

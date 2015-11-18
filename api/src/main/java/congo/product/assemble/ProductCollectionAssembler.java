@@ -13,25 +13,25 @@ import org.springframework.stereotype.Service;
 
 import congo.product.Product;
 import congo.product.ProductController;
-import congo.product.resource.ProductGetCollectionResource;
-import congo.product.resource.ProductGetResource;
+import congo.product.resource.ProductCollectionResource;
+import congo.product.resource.ProductResource;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
 
 @Service
-public class ProductGetCollectionAssembler implements ResourceAssembler<Collection<Product>, ProductGetCollectionResource>
+public class ProductCollectionAssembler implements ResourceAssembler<Collection<Product>, ProductCollectionResource>
 {
 	@Autowired
 	RelProvider relProvider;
 
 	@Autowired
-	ProductGetAssembler productGetAssembler;
+	ProductAssembler productAssembler;
 
 
 	@Override
-	public ProductGetCollectionResource toResource(Collection<Product> products)
+	public ProductCollectionResource toResource(Collection<Product> products)
 	{
-		return new ProductGetCollectionResource(
+		return new ProductCollectionResource(
 			getEmbeds(products),
 			getLinks());
 	}
@@ -42,7 +42,7 @@ public class ProductGetCollectionAssembler implements ResourceAssembler<Collecti
 		Collection<Link> links = new ArrayList<Link>();
 		links.add(linkTo(methodOn(ProductController.class).getProductList()).withSelfRel());
 		links.add(new Link(new UriTemplate(String.format("%s/{%s}", linkTo(ProductController.class), "id")),
-			relProvider.getItemResourceRelFor(ProductGetResource.class)));
+			relProvider.getItemResourceRelFor(ProductResource.class)));
 		return links;
 	}
 
@@ -52,7 +52,7 @@ public class ProductGetCollectionAssembler implements ResourceAssembler<Collecti
 		Collection<ResourceSupport> resources = new ArrayList<ResourceSupport>();
 		for (Product product : products)
 		{
-			resources.add(productGetAssembler.toResource(product));
+			resources.add(productAssembler.toResource(product));
 		}
 		return resources;
 	}

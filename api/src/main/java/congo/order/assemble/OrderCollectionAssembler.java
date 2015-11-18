@@ -13,25 +13,25 @@ import org.springframework.stereotype.Service;
 
 import congo.order.Order;
 import congo.order.OrderController;
-import congo.order.resource.OrderGetCollectionResource;
-import congo.order.resource.OrderGetResource;
+import congo.order.resource.OrderCollectionResource;
+import congo.order.resource.OrderResource;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
 
 @Service
-public class OrderGetCollectionAssembler implements ResourceAssembler<Collection<Order>, OrderGetCollectionResource>
+public class OrderCollectionAssembler implements ResourceAssembler<Collection<Order>, OrderCollectionResource>
 {
 	@Autowired
 	RelProvider relProvider;
 
 	@Autowired
-	OrderGetAssembler orderGetAssembler;
+	OrderAssembler orderAssembler;
 
 
 	@Override
-	public OrderGetCollectionResource toResource(Collection<Order> orders)
+	public OrderCollectionResource toResource(Collection<Order> orders)
 	{
-		return new OrderGetCollectionResource(getEmbeds(orders), getLinks());
+		return new OrderCollectionResource(getEmbeds(orders), getLinks());
 	}
 
 
@@ -40,7 +40,7 @@ public class OrderGetCollectionAssembler implements ResourceAssembler<Collection
 		Collection<Link> links = new ArrayList<Link>();
 		links.add(linkTo(methodOn(OrderController.class).getOrderList()).withSelfRel());
 		links.add(new Link(new UriTemplate(String.format("%s/{%s}", linkTo(OrderController.class), "id")),
-			relProvider.getItemResourceRelFor(OrderGetResource.class)));
+			relProvider.getItemResourceRelFor(OrderResource.class)));
 		return links;
 	}
 
@@ -50,7 +50,7 @@ public class OrderGetCollectionAssembler implements ResourceAssembler<Collection
 		Collection<ResourceSupport> resources = new ArrayList<ResourceSupport>();
 		for (Order order : orders)
 		{
-			resources.add(orderGetAssembler.toResource(order));
+			resources.add(orderAssembler.toResource(order));
 		}
 		return resources;
 	}

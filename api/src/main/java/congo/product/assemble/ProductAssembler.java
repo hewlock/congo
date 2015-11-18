@@ -13,22 +13,22 @@ import org.springframework.stereotype.Service;
 
 import congo.product.Product;
 import congo.product.ProductController;
-import congo.product.resource.ProductGetCollectionResource;
-import congo.product.resource.ProductGetResource;
+import congo.product.resource.ProductCollectionResource;
+import congo.product.resource.ProductResource;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
 
 @Service
-public class ProductGetAssembler implements ResourceAssembler<Product, ProductGetResource>
+public class ProductAssembler implements ResourceAssembler<Product, ProductResource>
 {
 	@Autowired
 	RelProvider relProvider;
 
 
 	@Override
-	public ProductGetResource toResource(Product product)
+	public ProductResource toResource(Product product)
 	{
-		return new ProductGetResource(
+		return new ProductResource(
 			product.getName(),
 			product.getDescription(),
 			product.getPrice(),
@@ -42,7 +42,7 @@ public class ProductGetAssembler implements ResourceAssembler<Product, ProductGe
 		Collection<Link> links = new ArrayList<Link>();
 		links.add(linkTo(methodOn(ProductController.class).getProduct(product.getId())).withSelfRel());
 		links.add(linkTo(methodOn(ProductController.class).getProductList())
-			.withRel(relProvider.getItemResourceRelFor(ProductGetCollectionResource.class)));
+			.withRel(relProvider.getItemResourceRelFor(ProductCollectionResource.class)));
 		return links;
 	}
 }

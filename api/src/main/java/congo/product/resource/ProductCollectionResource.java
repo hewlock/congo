@@ -6,9 +6,9 @@ import org.springframework.hateoas.Resources;
 import org.springframework.hateoas.core.Relation;
 
 @Relation(value = "congo:products", collectionRelation = "congo:products")
-public class ProductGetCollectionResource extends Resources<ResourceSupport>
+public class ProductCollectionResource extends Resources<ResourceSupport>
 {
-	public ProductGetCollectionResource(Iterable<ResourceSupport> content, Iterable<Link> links)
+	public ProductCollectionResource(Iterable<ResourceSupport> content, Iterable<Link> links)
 	{
 		super(content, links);
 	}

@@ -13,27 +13,28 @@ import org.springframework.stereotype.Service;
 
 import congo.cart.CartItem;
 import congo.cart.item.ItemController;
-import congo.cart.item.resource.ItemGetResource;
+import congo.cart.item.resource.ItemCollectionResource;
+import congo.cart.item.resource.ItemResource;
 import congo.product.ProductController;
-import congo.product.assemble.ProductGetAssembler;
-import congo.product.resource.ProductGetResource;
+import congo.product.assemble.ProductAssembler;
+import congo.product.resource.ProductResource;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
 
 @Service
-public class ItemGetAssembler implements ResourceAssembler<CartItem, ItemGetResource>
+public class ItemAssembler implements ResourceAssembler<CartItem, ItemResource>
 {
 	@Autowired
 	RelProvider relProvider;
 
 	@Autowired
-	ProductGetAssembler productGetAssembler;
+	ProductAssembler productAssembler;
 
 
 	@Override
-	public ItemGetResource toResource(CartItem item)
+	public ItemResource toResource(CartItem item)
 	{
-		return new ItemGetResource(getEmbeds(item), getLinks(item));
+		return new ItemResource(getEmbeds(item), getLinks(item));
 	}
 
 
@@ -42,16 +43,16 @@ public class ItemGetAssembler implements ResourceAssembler<CartItem, ItemGetReso
 		Collection<Link> links = new ArrayList<Link>();
 		links.add(linkTo(methodOn(ItemController.class).getCartItem(item.getId())).withSelfRel());
 		links.add(linkTo(methodOn(ItemController.class).getCartItemList())
-			.withRel(relProvider.getItemResourceRelFor(ItemGetResource.class)));
+			.withRel(relProvider.getItemResourceRelFor(ItemCollectionResource.class)));
 		links.add(linkTo(methodOn(ProductController.class).getProduct(item.getProduct().getId()))
-			.withRel(relProvider.getItemResourceRelFor(ProductGetResource.class)));
+			.withRel(relProvider.getItemResourceRelFor(ProductResource.class)));
 		return links;
 	}
 
 
 	private Collection<ResourceSupport> getEmbeds(CartItem item)
 	{
-		ResourceSupport resource = productGetAssembler.toResource(item.getProduct());
+		ResourceSupport resource = productAssembler.toResource(item.getProduct());
 		return Collections.singleton(resource);
 	}
 }
