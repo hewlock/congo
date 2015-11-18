@@ -81,7 +81,7 @@ Add a product to the shopping cart.
 
 ```
 {
-    "product": "http://localhost:8080/product/1"
+    "congo:product": "http://localhost:8080/product/1"
 }
 ```
 
